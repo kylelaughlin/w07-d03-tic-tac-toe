@@ -11,6 +11,8 @@ function setUpPage () {
   };
 };
 
+
+
 function addClass(element, className){
   element.classList.add(className);
 }
@@ -19,7 +21,10 @@ function removeClass(element, className){
   element.classList.remove(className);
 }
 
+//Global Variables
 var turnSwitch = 0
+var board = [["","",""],["","",""],["","",""]]
+
 
 function play(){
 
@@ -42,10 +47,70 @@ function play(){
     removeClass(xIdle, "visible");
   };
 
-  turnSwitch++;
+
+
+
 
 }
 
-function selectMove(){
+function selectMove() {
+  //Define symbol and write to board
+  var symbol = "";
+  if(turnSwitch % 2 === 0){
+    symbol = "X";
+  } else {
+    symbol = "O";
+  }
+  this.innerHTML = symbol;
+
+  //Remove the event listener for that tile
+  this.removeEventListener("click", selectMove);
+
+  //Tick up
+  turnSwitch++;
+
+  //Populate array
+  switch(this.id) {
+    case "tile-1-1":
+      board[0][0] = symbol;
+      break;
+    case "tile-1-2":
+      board[0][1] = symbol;
+      break;
+    case "tile-1-3":
+      board[0][2] = symbol;
+      break;
+    case "tile-2-1":
+      board[1][0] = symbol;
+      break;
+    case "tile-2-2":
+      board[1][1] = symbol;
+      break;
+    case "tile-2-3":
+      board[1][2] = symbol;
+      break;
+    case "tile-3-1":
+      board[2][0] = symbol;
+      break;
+    case "tile-3-2":
+      board[2][1] = symbol;
+      break;
+    case "tile-3-3":
+      board[2][2] = symbol;
+      break;
+  }
+
+  //Check for winner
+  var win = false;
+  //Check for horizontal winner
+  win =     board[0] == [symbol,symbol,symbol] ||
+            board[1] == [symbol,symbol,symbol] ||
+            board[2] == [symbol,symbol,symbol] ||
+            board[0][0] == symbol && board[1][0] == symbol && board[2][0] == symbol ||
+            board[0][1] == symbol && board[1][1] == symbol && board[2][1] == symbol ||
+            board[0][2] == symbol && board[1][2] == symbol && board[2][2] == symbol ||
+            board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol ||
+            board[2][0] == symbol && board[1][1] == symbol && board[0][2] == symbol;
+
 
 }
