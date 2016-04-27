@@ -25,34 +25,6 @@ function removeClass(element, className){
 var turnSwitch = 0
 var board = [["","",""],["","",""],["","",""]]
 
-
-function play(){
-
-  alert("play entered");
-
-  //Display who's turn it is.  Even = x  Odd = o
-  if(turnSwitch % 2 === 0){
-    var xReady = document.getElementById("player-x-ready");
-    addClass(xReady, "visible");
-    removeClass(xReady, "hidden");
-    var oIdle = document.getElementById("player-o-ready");
-    addClass(oIdle, "hidden");
-    removeClass(oIdle, "visible");
-  } else {
-    var oReady = document.getElementById("player-o-ready");
-    addClass(oReady, "visible");
-    removeClass(oReady, "hidden");
-    var xIdle = document.getElementById("player-x-ready");
-    addClass(xIdle, "hidden");
-    removeClass(xIdle, "visible");
-  };
-
-
-
-
-
-}
-
 function selectMove() {
   //Define symbol and write to board
   var symbol = "";
@@ -65,9 +37,6 @@ function selectMove() {
 
   //Remove the event listener for that tile
   this.removeEventListener("click", selectMove);
-
-  //Tick up
-  turnSwitch++;
 
   //Populate array
   switch(this.id) {
@@ -111,6 +80,35 @@ function selectMove() {
             board[0][2] == symbol && board[1][2] == symbol && board[2][2] == symbol ||
             board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol ||
             board[2][0] == symbol && board[1][1] == symbol && board[0][2] == symbol;
+
+  //Tick up
+  turnSwitch++;
+
+  //if win show result else prompt for next turn
+  if(win){
+    //display message based on symbol -- Prompts for new game -
+    //we need to increment x or o win total
+  }
+  if(turnSwitch === 8){
+    
+  } else {
+    //Display who's turn it is.  Even = x  Odd = o
+    if(turnSwitch % 2 === 0){
+      var xReady = document.getElementById("player-x-ready");
+      addClass(xReady, "visible");
+      removeClass(xReady, "hidden");
+      var oIdle = document.getElementById("player-o-ready");
+      addClass(oIdle, "hidden");
+      removeClass(oIdle, "visible");
+    } else {
+      var oReady = document.getElementById("player-o-ready");
+      addClass(oReady, "visible");
+      removeClass(oReady, "hidden");
+      var xIdle = document.getElementById("player-x-ready");
+      addClass(xIdle, "hidden");
+      removeClass(xIdle, "visible");
+    };
+  }
 
 
 }
