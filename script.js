@@ -49,27 +49,22 @@ function selectMove() {
   //Populate array
   populateArray(this, symbol);
 
+  //Tick up turnSwither
+  turnSwitch++;
+
   //Check for winner
   var win = false;
   win = checkForWinner(symbol);
-
-  //Tick up turnSwither
-  turnSwitch++;
 
   //if win show result else prompt for next turn
   if(win){
     //Remove the player X and player O ready message
     hideXReady();
     hideOReady();
-
     //Add Winner message
     addWinnerMessage(symbol);
-
-    //Remove Event listeners
-    var tiles = document.getElementsByClassName("board-tile");
-    for(var i = 0; i < tiles.length; i++){
-      tiles[i].removeEventListener("click", selectMove);
-    };
+    //Remove Event listeners on all tiles
+    removeTileListeners();
   } else if(move === 8) {
     //Display tie message and remove whose turn it is
     var tieMessage = document.getElementById("tie-game");
@@ -192,25 +187,55 @@ function playerToggle(){
   };
 }
 
+//Facilitates a winning messages
+// +symbol: a string representing 'X' or 'O'
 function addWinnerMessage(symbol){
   if(symbol === "X"){
-    var xWin = document.getElementById("player-x-wins");
-    removeClass(xWin, "hidden");
-    addClass(xWin, "visible");
-    //Increment X player wins by 1
-    xPlayerWins++
-    //Display x player wins in html
-    var xScore = document.getElementById("x-score");
-    xScore.innerHTML = xPlayerWins;
+    xWinsMessage();
+    xScoreUp();
   } else {
-    var oWin = document.getElementById("player-o-wins");
-    removeClass(oWin, "hidden");
-    addClass(oWin, "visible");
-    //Increment O player wins by 1
-    oPlayerWins++
-    //Display 0 player wins in html
-    var oScore = document.getElementById("o-score");
-    oScore.innerHTML = oPlayerWins;
+    oWinsMessage();
+    oScoreUp();
+  };
+};
+
+//Makes visible the div which displays x wins message
+function xWinsMessage(){
+  var xWin = document.getElementById("player-x-wins");
+  removeClass(xWin, "hidden");
+  addClass(xWin, "visible");
+};
+
+//Makes visible the div which displays o wins message
+function oWinsMessage(){
+  var oWin = document.getElementById("player-o-wins");
+  removeClass(oWin, "hidden");
+  addClass(oWin, "visible");
+};
+
+//Displays player x's new score
+function xScoreUp(){
+  //Increment X player wins by 1
+  xPlayerWins++
+  //Display x player wins in html
+  var xScore = document.getElementById("x-score");
+  xScore.innerHTML = xPlayerWins;
+}
+
+//Displays player o's new score
+function oScoreUp(){
+  //Increment O player wins by 1
+  oPlayerWins++
+  //Display 0 player wins in html
+  var oScore = document.getElementById("o-score");
+  oScore.innerHTML = oPlayerWins;
+}
+
+//Remove Event listeners on all tiles
+function removeTileListeners(){
+  var tiles = document.getElementsByClassName("board-tile");
+  for(var i = 0; i < tiles.length; i++){
+    tiles[i].removeEventListener("click", selectMove);
   };
 };
 
