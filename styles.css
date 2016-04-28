@@ -55,44 +55,53 @@ color: #22264b;
 
 .board {
   margin: auto;
+  border-collapse: collapse;
+
 }
 
 .board-tile {
   width: 75px;
   height: 75px;
   background-color: #e8edf3;
-  border-radius: 7px;
+  margin:0;
+  border-radius: 3px;
 }
 
 .row-1 {
   border-bottom-style: solid;
+  border-width:thick;
   border-color: #e6cf8b;
 }
 
 .row-2 {
   border-top-style: solid;
   border-bottom-style: solid;
+  border-width:thick;
   border-color: #e6cf8b;
 }
 
 .row-3 {
   border-top-style: solid;
+  border-width:thick;
   border-color: #e6cf8b;
 }
 
 .col-1 {
   border-right-style: solid;
+  border-width:thick;
   border-color: #e6cf8b;
 }
 
 .col-2 {
   border-left-style: solid;
   border-right-style: solid;
+  border-width:thick;
   border-color: #e6cf8b;
 }
 
 .col-3 {
   border-left-style: solid;
+  border-width:thick;
   border-color: #e6cf8b;
 }
 

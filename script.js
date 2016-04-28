@@ -12,6 +12,9 @@ function setUpPage () {
   for(var i = 0; i < elements.length; i++){
     elements[i].addEventListener("click", newGame);
   };
+
+  var element = document.getElementById("reset-button");
+  element.addEventListener("click", resetGame);
 };
 
 
@@ -56,7 +59,7 @@ function selectMove() {
   var win = false;
   win = checkForWinner(symbol);
 
-  //if win show result else prompt for next turn
+  //if win show result, tie shows tie, else prompt for next turn
   if(win){
     //Remove the player X and player O ready message
     hideXReady();
@@ -93,6 +96,8 @@ function playerSymbol(){
 }
 
 //Adds class to change X to red or O to green
+// +symbol: a string reprsenting either 'X' or 'O'
+// +tile: the element clicked to be updated
 function symbolColor(symbol, tile){
   if(symbol === "X"){
     tile.classList.add("place-x");
@@ -102,6 +107,8 @@ function symbolColor(symbol, tile){
 };
 
 //Populate array with the appropriate symbol
+// +tile: the element clicked to be updated
+// +symbol: a string reprsenting either 'X' or 'O'
 function populateArray(tile, symbol){
   switch(tile.id) {
     case "tile-1-1":
@@ -177,6 +184,7 @@ function showOReady(){
   removeClass(oReady, "hidden");
 };
 
+//Switches the prompted player for thier move
 function playerToggle(){
   if(turnSwitch % 2 === 0){
     showXReady();
@@ -192,10 +200,14 @@ function playerToggle(){
 function addWinnerMessage(symbol){
   if(symbol === "X"){
     xWinsMessage();
-    xScoreUp();
+    //Increment X player wins by 1
+    xPlayerWins++
+    xScoreDisplay();
   } else {
     oWinsMessage();
-    oScoreUp();
+    //Increment O player wins by 1
+    oPlayerWins++
+    oScoreDisplay();
   };
 };
 
@@ -214,18 +226,14 @@ function oWinsMessage(){
 };
 
 //Displays player x's new score
-function xScoreUp(){
-  //Increment X player wins by 1
-  xPlayerWins++
+function xScoreDisplay(){
   //Display x player wins in html
   var xScore = document.getElementById("x-score");
   xScore.innerHTML = xPlayerWins;
 }
 
 //Displays player o's new score
-function oScoreUp(){
-  //Increment O player wins by 1
-  oPlayerWins++
+function oScoreDisplay(){
   //Display 0 player wins in html
   var oScore = document.getElementById("o-score");
   oScore.innerHTML = oPlayerWins;
@@ -239,43 +247,47 @@ function removeTileListeners(){
   };
 };
 
+//######################################################
+//############# NEW GAME ###############################
+//######################################################
+
 //Initiate a new game - maintain scores and turnSwitch
 function newGame() {
+
   //reset board and move variables to game start state
-  board = [["","",""],["","",""],["","",""]]
-  move = 0
+  resetNewGameVariables();
 
   //Clear board to game start state
-  var tile = document.getElementById("tile-1-1");
-  tile.innerHTML = "";
-  var tile = document.getElementById("tile-1-2");
-  tile.innerHTML = "";
-  var tile = document.getElementById("tile-1-3");
-  tile.innerHTML = "";
-  var tile = document.getElementById("tile-2-1");
-  tile.innerHTML = "";
-  var tile = document.getElementById("tile-2-2");
-  tile.innerHTML = "";
-  var tile = document.getElementById("tile-2-3");
-  tile.innerHTML = "";
-  var tile = document.getElementById("tile-3-1");
-  tile.innerHTML = "";
-  var tile = document.getElementById("tile-3-2");
-  tile.innerHTML = "";
-  var tile = document.getElementById("tile-3-3");
-  tile.innerHTML = "";
-
-  //Clear tile font-colors
-  var tiles = document.getElementsByClassName("board-tile");
-  for(var i = 0; i < tiles.length; i++){
-    tiles[i].classList.remove("place-x");
-    tiles[i].classList.remove("place-o");
-  };
+  clearTiles();
 
   //Run Setup Page to reinstantiate event listeners
   setUpPage();
 
   //Remove winner or tie game message
+  removeEndGameMessage();
+
+  //Display a player to move -This is repeat code
+  playerToggle();
+};
+
+//reset board and move variables to game start state
+function resetNewGameVariables(){
+  board = [["","",""],["","",""],["","",""]];
+  move = 0;
+};
+
+//Clear board to game start state
+function clearTiles(){
+  var tiles = document.getElementsByClassName("board-tile");
+  for(var i = 0; i < tiles.length; i++){
+    tiles[i].innerHTML = "";
+    tiles[i].classList.remove("place-x");
+    tiles[i].classList.remove("place-o");
+  };
+};
+
+//Remove winner or tie game message
+function removeEndGameMessage(){
   var tieMessage = document.getElementById("tie-game");
   addClass(tieMessage, "hidden");
   removeClass(tieMessage, "visible");
@@ -285,21 +297,18 @@ function newGame() {
   var oWin = document.getElementById("player-o-wins");
   removeClass(oWin, "visible");
   addClass(oWin, "hidden");
+};
 
-  //Display a player to move -This is repeat code
-  if(turnSwitch % 2 === 0){
-    var xReady = document.getElementById("player-x-ready");
-    addClass(xReady, "visible");
-    removeClass(xReady, "hidden");
-    var oIdle = document.getElementById("player-o-ready");
-    addClass(oIdle, "hidden");
-    removeClass(oIdle, "visible");
-  } else {
-    var oReady = document.getElementById("player-o-ready");
-    addClass(oReady, "visible");
-    removeClass(oReady, "hidden");
-    var xIdle = document.getElementById("player-x-ready");
-    addClass(xIdle, "hidden");
-    removeClass(xIdle, "visible");
-  };
+//######################################################
+//############# Reset GAME #############################
+//######################################################
+
+function resetGame(){
+  newGame();
+  xPlayerWins = 0
+  oPlayerWins = 0
+  turnSwitch = 0
+  xScoreDisplay();
+  oScoreDisplay();
+  playerToggle();
 }
