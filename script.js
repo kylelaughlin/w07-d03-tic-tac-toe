@@ -156,6 +156,55 @@ function checkForWinner(symbol) {
   return win;
 };
 
+function checkForWinners(symbol) {
+  var win = false;
+  var checkSymbols = [];
+  var check = ""
+  if(symbol === "X"){
+    check = "O"
+  } else if(symbol === "O") {
+    check = "X"
+  };
+  //Check row winner
+  for(var row = 0; row < board[0].length; row++){
+    for(var col = 0; col < board[0].length; col++){
+      checkSymbols.push(board[row][col]);
+    };
+    win = winnerChecker(checkSymbols, check, win);
+    checkSymbols = [];
+  };
+  //Check col winner
+  for(var col = 0; col < board[0].length; col++){
+    for(var row = 0; row < board[0].length; row++){
+      checkSymbols.push(board[row][col]);
+    };
+    win = winnerChecker(checkSymbols, check, win);
+    checkSymbols = [];
+  };
+  //Check for diagnol winner
+  for(var colrow = 0; colrow < board[0].length; colrow++){
+    checkSymbols.push(board[colrow][colrow]);
+  };
+  win = winnerChecker(checkSymbols, check, win);
+  checkSymbols = [];
+  //Check for other diagnol winner
+  var numRows = board[0].length -1;
+  for(var row = numRows; row >= 0; row--){
+    for(var col = 0; col < board[0].length; col++){
+      checkSymbols.push(board[row][col]);
+    };
+    win = winnerChecker(checkSymbols, check, win);
+  };
+ return win;
+};
+
+function winnerChecker(checkSymbols, check, win){
+  if(!checkSymbols.includes(check) && !checkSymbols.includes("")){
+    win = true;
+  };
+  return win;
+};
+
 //Hide the div with class name of 'player-x-ready'
 function hideXReady(){
   var xReady = document.getElementById("player-x-ready");
